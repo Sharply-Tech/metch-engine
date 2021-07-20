@@ -22,7 +22,11 @@ configurations {
 repositories {
     mavenCentral()
     /**
-     * Don't know the last /tech is needed, but I got to this solution after many tries and fails.
+     * Don't know why the last /tech is needed, but I got to this solution after many tries and fails.
+     * Also, packages owned by organizations cannot be public for now for whatever reason.
+     * Packages owned by organizations, even if they are public, can only be installed by the organization's member.
+     * More digging to do!
+     * Packages owned by users, on the other hand can be public, but haven't tried it.
      */
     maven("https://maven.pkg.github.com/Sharply-Tech/tech/") {
         credentials {
@@ -44,7 +48,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.session:spring-session-core")
 
-    implementation("tech.sharply.metch:metch-orderbook:0.1.0")
+    implementation("tech.sharply.metch:metch-orderbook:0.2.0")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
