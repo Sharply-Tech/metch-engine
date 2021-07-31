@@ -48,7 +48,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.session:spring-session-core")
 
-    implementation("tech.sharply.metch:metch-orderbook:0.2.0")
+    implementation("tech.sharply.metch:metch-orderbook:0.5.1")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

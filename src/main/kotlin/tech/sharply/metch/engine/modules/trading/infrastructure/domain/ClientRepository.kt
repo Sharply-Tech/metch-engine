@@ -2,7 +2,7 @@ package tech.sharply.metch.engine.modules.trading.infrastructure.domain
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
-import tech.sharply.metch.engine.modules.trading.domain.model.Instrument
+import tech.sharply.metch.engine.modules.trading.domain.model.Client
 
 @Repository
-interface InstrumentRepository : JpaRepository<Instrument, Long>
+interface ClientRepository : JpaRepository<Client, Long>

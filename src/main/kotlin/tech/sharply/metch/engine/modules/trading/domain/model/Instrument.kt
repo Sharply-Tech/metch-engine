@@ -1,10 +1,15 @@
 package tech.sharply.metch.engine.modules.trading.domain.model
 
-import javax.persistence.Column
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
+enum class Market {
+    STOCKS,
+    COMMODITIES,
+    CRYPTO
+}
+
+@Entity
+@Table
 class Instrument(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,5 +17,7 @@ class Instrument(
     @Column(unique = true)
     val name: String,
     @Column(unique = true)
-    val symbol: String
+    val symbol: String,
+    @Enumerated(EnumType.STRING)
+    val market: Market
 )
