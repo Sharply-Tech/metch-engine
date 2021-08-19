@@ -11,7 +11,7 @@ plugins {
 
 group = "tech.sharply.metch"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 configurations {
     compileOnly {
@@ -30,7 +30,13 @@ repositories {
      */
     maven("https://maven.pkg.github.com/Sharply-Tech/tech/") {
         credentials {
-            username = System.getenv("GITHUB_USERNAME")
+            username = "cosmyn9708@gmail.com"
+            password = System.getenv("GITHUB_PACKAGES_REPOSITORY_TOKEN")
+        }
+    }
+    maven("https://maven.pkg.github.com/cosminstn/tech") {
+        credentials {
+            username = "cosmyn9708@gmail.com"
             password = System.getenv("GITHUB_PACKAGES_REPOSITORY_TOKEN")
         }
     }
@@ -49,6 +55,7 @@ dependencies {
     implementation("org.springframework.session:spring-session-core")
 
     implementation("tech.sharply.metch:metch-orderbook:0.5.1")
+    implementation("tech.sharply:spring-disruptor-mediatr:0.2.0")
 
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -62,7 +69,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "16"
+        jvmTarget = "1.8"
     }
 }
 
