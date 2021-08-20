@@ -1,9 +1,7 @@
 package tech.sharply.metch.engine.modules.trading
 
-import tech.sharply.metch.engine.modules.financial.domain.model.FinancialInfo
-import tech.sharply.metch.engine.modules.trading.domain.model.Client
 import tech.sharply.metch.engine.modules.trading.domain.model.Instrument
-import tech.sharply.metch.orderbook.domain.model.orderbook.async.AsyncOrderBook
+import tech.sharply.metch.orderbook.domain.model.orderbook.OrderBook
 
 interface ITradingEngine {
 
@@ -11,7 +9,8 @@ interface ITradingEngine {
 
     fun findOpenedInstrumentById(id: Long): Instrument?
 
-    fun findOrderBookByInstrument(instrument: Instrument): AsyncOrderBook?
+    fun openInstrument(instrument: Instrument)
 
+    fun findOrderBookByInstrument(instrument: Instrument): OrderBook?
 
 }
