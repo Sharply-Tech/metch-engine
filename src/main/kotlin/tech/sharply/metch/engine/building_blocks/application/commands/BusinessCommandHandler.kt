@@ -9,8 +9,8 @@ import kotlin.jvm.Throws
 interface BusinessRuleValidator {
 
     @Throws(BusinessRuleValidationException::class)
-    fun checkRule(rule: BusinessRule) {
-        rule.checkRule()
+    fun <TResponse> checkRule(rule: BusinessRule<TResponse>): TResponse {
+        return rule.checkRule()
     }
 
 }

@@ -3,11 +3,11 @@ package tech.sharply.metch.engine.modules.trading
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
+import tech.sharply.metch.engine.modules.trading.application.commands._internal.LoadAssetsCommand
 import tech.sharply.metch.engine.modules.trading.domain.events.ClientOrderCancelledEvent
 import tech.sharply.metch.engine.modules.trading.domain.events.ClientOrderPlacedEvent
 import tech.sharply.metch.engine.modules.trading.domain.events.ClientOrderUpdatedEvent
 import tech.sharply.metch.engine.modules.trading.domain.model.Instrument
-import tech.sharply.metch.engine.modules.trading.infrastructure.domain.InstrumentRepository
 import tech.sharply.metch.orderbook.domain.events.OrderCancelledEvent
 import tech.sharply.metch.orderbook.domain.events.OrderPlacedEvent
 import tech.sharply.metch.orderbook.domain.events.OrderUpdatedEvent
@@ -21,40 +21,46 @@ import javax.annotation.PostConstruct
 @Component
 class TradingEngine(
     @Autowired
-    val instrumentRepository: InstrumentRepository,
-    @Autowired
     val mediator: Mediator
 ) : ITradingEngine {
 
-    val instrumentsById: MutableMap<Long, Instrument> = HashMap()
+    val allInstrumentsById: MutableMap<Long, Instrument> = HashMap()
+    val openedInstrumentsById: MutableMap<Long, Instrument> = HashMap()
     val orderBooksByInstrumentId: MutableMap<Long, OrderBook> = HashMap()
 
     @PostConstruct
     private fun init() {
-        this.loadAssets()
+        loadAssets()
     }
 
-    private fun isOpened(instrument: Instrument): Boolean {
+    override fun isOpened(instrument: Instrument): Boolean {
         return orderBooksByInstrumentId.containsKey(instrument.id)
-    }
-
-    private fun open(instrument: Instrument) {
     }
 
     @Scheduled(fixedDelay = 5000)
     private fun loadAssets() {
+        mediator.dispatchBlocking(LoadAssetsCommand())
+    }
 
+    override fun findAllInstruments(): Collection<Instrument> {
+        return allInstrumentsById.values
+    }
+
+    override fun findInstrumentById(id: Long): Instrument? {
+        return allInstrumentsById[id]
     }
 
     override fun findOpenedInstruments(): Collection<Instrument> {
-        return instrumentsById.values
+        return openedInstrumentsById.values
     }
 
     override fun findOpenedInstrumentById(id: Long): Instrument? {
-        return instrumentsById[id]
+        return openedInstrumentsById[id]
     }
 
     override fun openInstrument(instrument: Instrument) {
+        allInstrumentsById[instrument.id] = instrument
+        openedInstrumentsById[instrument.id] = instrument
         orderBooksByInstrumentId[instrument.id] = NaiveOrderBook(object : OrderBookEventsHandler {
             override fun handle(event: OrderCancelledEvent) {
                 mediator.publishEvent(ClientOrderCancelledEvent(this, event.order))
