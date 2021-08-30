@@ -1,10 +1,11 @@
 package tech.sharply.metch.engine.modules.security.domain.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-class UserPrincipal(private val email: String, private val pass: String) : UserDetails {
-
+class UserPrincipal(private val email: String, private val pass: String, @JsonIgnore val multiFactorSecret: String?) :
+    UserDetails {
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
         return listOf()
@@ -32,6 +33,10 @@ class UserPrincipal(private val email: String, private val pass: String) : UserD
 
     override fun isEnabled(): Boolean {
         return true
+    }
+
+    fun usesMultiFactorAuth(): Boolean {
+        return multiFactorSecret != null
     }
 
 }

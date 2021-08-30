@@ -58,6 +58,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.session:spring-session-core")
 
+    // Used for jwt decoding/encoding
+    implementation("com.auth0:java-jwt:3.14.0")
+    // Used for multi-factor auth
+    implementation("org.jboss.aerogear:aerogear-otp-java:1.0.0")
+
+
     implementation("tech.sharply.metch:metch-orderbook:0.5.1")
     implementation("tech.sharply:spring-disruptor-mediatr:0.2.0")
 

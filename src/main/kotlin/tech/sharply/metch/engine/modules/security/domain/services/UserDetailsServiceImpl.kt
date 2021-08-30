@@ -6,15 +6,13 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import tech.sharply.metch.engine.modules.security.domain.model.UserPrincipal
-import tech.sharply.metch.engine.modules.security.infrastructure.domain.model.UserRepository
-import kotlin.jvm.Throws
+import tech.sharply.metch.engine.modules.security.domain.model.UserRepository
 
 @Service
 class UserDetailsServiceImpl(
     @Autowired
     val userRepository: UserRepository
-): UserDetailsService{
-
+) : UserDetailsService {
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(email: String?): UserDetails {
@@ -28,11 +26,14 @@ class UserDetailsServiceImpl(
             val user = userRepository.findByEmail(email)
             if (user.isEmpty) throw UsernameNotFoundException("No user found for username $email")
 
-            UserPrincipal(user.get().email, user.get().password)
+            // decode multi factor secret
+
+            UserPrincipal(user.get().email, user.get().password, user.get().)
         } catch (ex: UsernameNotFoundException) {
             throw ex
         } catch (ex: Exception) {
             throw UsernameNotFoundException("Could not load user details for user: $email", ex)
         }
     }
+
 }
