@@ -10,7 +10,7 @@ import tech.sharply.spring_disruptor_mediatr.mediator.DisruptorMediatorImpl
 
 @EnableScheduling
 @SpringBootApplication
-class MetchEngineApplication {
+class App {
 
     @Bean
     fun mediator(@Autowired context: ApplicationContext): DisruptorMediatorImpl {
@@ -20,5 +20,5 @@ class MetchEngineApplication {
 }
 
 fun main(args: Array<String>) {
-    runApplication<MetchEngineApplication>(*args)
+    runApplication<App>(*args)
 }
